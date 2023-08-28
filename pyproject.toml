@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "umbrella"
+version = "0.1.0"
+description = "a discord bot with minecraft server & aws integration"
+authors = ["hyunwoo312 <hyunwoojames@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+
+[tool.poetry.dependencies]
+python = "3.9.*"
+
+awscli = "1.29.*"
+boto3 = "1.28.*"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "3.0.2"
+isort = "5.12.0"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.taskipy.tasks]
+isort = "isort ."
