@@ -40,7 +40,8 @@ jobs:
           flake8 . --count --show-source --statistics
 
       - name: Testing changes pushed by ${{ github.actor }} on branch ${{ github.ref }} ⌛
-        uses: pytest
+        run: |
+          pytest
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
