@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - mainline
+      - setup
 
 env:
   AWS_REGION: us-east-1
@@ -13,10 +14,40 @@ jobs:
   deployment:
     environment: production
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - 3.9
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install poetry
+          poetry install --without dev
+
+      - name: Checking Lint
+        run: |
+          flake8 . --count --show-source --statistics
+
+      - name: Testing changes pushed by ${{ github.actor }} on branch ${{ github.ref }} ⌛
+        uses: pytest
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
