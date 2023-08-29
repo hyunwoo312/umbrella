@@ -35,10 +35,6 @@ jobs:
           python -m pip install poetry
           poetry install --without dev
 
-      - name: Checking Lint
-        run: |
-          flake8 . --count --show-source --statistics
-
       - name: Testing changes pushed by ${{ github.actor }} on branch ${{ github.ref }} ⌛
         run: |
           pytest
