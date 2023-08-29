@@ -2,9 +2,12 @@ name: Deployment Workflow
 run-name: ${{ github.actor }} is testing out GitHub Actions ☔
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Test Workflow"]
     branches:
       - mainline
+    types:
+      - completed
 
 env:
   AWS_REGION: us-east-1

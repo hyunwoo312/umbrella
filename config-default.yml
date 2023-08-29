@@ -1,11 +1,11 @@
-debug:     !ENV ["BOT_DEBUG", "true"]
-file_logs: !ENV ["FILE_LOGS", "false"]
+debug:     ["BOT_DEBUG", "true"]
+file_logs: ["FILE_LOGS", "false"]
 
 bot:
     prefix:         "!"
-    sentry_dsn:     !ENV "DISCORD_SENTRY_DSN"
-    token:          !ENV "DISCORD_TOKEN"
-    trace_loggers:  !ENV "DISCORD_TRACE_LOGGERS"
+    sentry_dsn:     "DISCORD_SENTRY_DSN"
+    token:          "DISCORD_TOKEN"
+    trace_loggers:  "DISCORD_TRACE_LOGGERS"
 
 style:
     colors:
@@ -16,3 +16,6 @@ style:
         tomato:   0xff6347
         white:    0xffffff
         yellow:   0xffff00
+
+url:
+    source: "https://github.com/hyunwoo312/umbrella"

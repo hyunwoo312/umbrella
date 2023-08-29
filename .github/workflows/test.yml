@@ -1,57 +1,18 @@
-name: Lint and Test Workflow
-run-name: Running Linters 🔎 and Tests ⌛
+name: Test Workflow
+run-name: Running Tests ⌛
 
 on:
-  pull_request:
-    branches:
-      mainline
-  push:
+  workflow_run:
+    workflows: ["Lint Workflow"]
     branches:
       - mainline
       - setup
+    types:
+      - completed
 
 jobs:
-  run-linters:
-    name: Linting
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-        python-version:
-          - 3.9
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Changes by ${{ github.actor }}
-        run: |
-          echo "🖥️ Changes by ${{ github.actor }}"
-
-      - name: Check out repo
-        uses: actions/checkout@v3
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install black flake8 isort
-
-      - name: Run Linters
-        run: |
-          echo "Running black linter ⚫"
-          black . --check
-          echo "Running flake8 linter ❄️"
-          flake8 .  --count --show-source --statistics
-          echo "Running isort linter 🧹"
-          isort .
-
   run-tests:
     name: Testing
-    needs: run-linters
     strategy:
       fail-fast: false
       matrix:
