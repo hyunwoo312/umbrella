@@ -23,11 +23,11 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Changes by ${{ github.actor }} on branch ${{ github.ref }}
+      - name: Changes by ${{ github.actor }}
         run: |
-          echo "🖥️ Changes by ${{ github.actor }} on branch ${{ github.ref }}"
+          echo "🖥️ Changes by ${{ github.actor }}"
 
-      - name: Check out ${{ github.repository }}
+      - name: Check out repo
         uses: actions/checkout@v3
 
       - name: Set up Python ${{ matrix.python-version }}
@@ -62,11 +62,11 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Changes by ${{ github.actor }} on branch ${{ github.ref }}
+      - name: Changes by ${{ github.actor }}
         run: |
-          echo "🖥️ Changes by ${{ github.actor }} on branch ${{ github.ref }}"
+          echo "🖥️ Changes by ${{ github.actor }}"
 
-      - name: Check out ${{ github.repository }}
+      - name: Check out repo
         uses: actions/checkout@v3
 
       - name: Set up Python ${{ matrix.python-version }}
