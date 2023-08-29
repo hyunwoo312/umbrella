@@ -3,10 +3,12 @@ run-name: ${{ github.actor }} is testing out GitHub Actions ☔
 
 on:
   workflow_run:
-    workflows: ["Test Workflow"]
+    workflows:
+      - Test Workflow
     branches:
       - mainline
-    types: [completed]
+    types:
+      - completed
 
 env:
   AWS_REGION: us-east-1
