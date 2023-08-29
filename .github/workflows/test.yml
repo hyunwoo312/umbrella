@@ -42,8 +42,11 @@ jobs:
 
       - name: Run Linters
         run: |
+          echo "Running black linter ⚫"
           black . --check
+          echo "Running flake8 linter ❄️"
           flake8 .  --count --show-source --statistics
+          echo "Running isort linter 🧹"
           isort .
 
   run-tests:
@@ -91,10 +94,4 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Test with pytest
-        run: poetry run pytest --cov --cov-report=xml
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: true
+        run: poetry run pytest --cov
