@@ -1,12 +1,15 @@
 name: Test Workflow
+run-name: Running Tests ⌛
 
 on:
   workflow_run:
-    workflows: ["Lint Workflow"]
+    workflows:
+      - Lint Workflow
     branches:
       - mainline
       - setup
-    types: [completed]
+    types:
+      - completed
 
 jobs:
   run-tests:
