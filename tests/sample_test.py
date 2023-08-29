@@ -10,6 +10,7 @@ def is_palindrome(word):
     [
         ("", True),
         ("a", True),
+        ("bcb", True),
         ("Bob", True),
         ("Never odd or even", True),
         ("Do geese see God?", True),
