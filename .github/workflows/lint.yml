@@ -1,4 +1,5 @@
 name: Lint Workflow
+run-name: Running Linters 🔎
 
 on:
   push:
