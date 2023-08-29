@@ -2,8 +2,7 @@ name: Test Workflow
 
 on:
   workflow_run:
-    workflows:
-      - Lint Workflow
+    workflows: [Lint Workflow]
     branches:
       - mainline
       - setup
