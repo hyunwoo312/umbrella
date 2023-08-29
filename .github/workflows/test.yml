@@ -1,5 +1,4 @@
 name: Test Workflow
-run-name: Running Tests ⌛
 
 on:
   workflow_run:
