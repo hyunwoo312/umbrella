@@ -1,12 +1,11 @@
 from collections.abc import Callable
 
 import discord
-from discord import Interaction, app_commands
+from discord import Interaction, SelectOption, app_commands
 from discord.ext.commands import Cog, Context, command
-from discord import SelectOption
 
-from umbrella.umbrella import Umbrella
 from umbrella.constants import PING_USER_ID
+from umbrella.umbrella import Umbrella
 
 DEFAULT_MODAL_TIMEOUT = 180
 
