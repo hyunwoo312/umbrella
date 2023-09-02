@@ -1,5 +1,5 @@
 name: Deployment Workflow
-run-name: ${{ github.actor }} is testing out GitHub Actions ☔
+run-name: Deploying Umbrella ☔
 
 on:
   workflow_run:
@@ -45,10 +45,6 @@ jobs:
           python -m pip install poetry
           poetry install --without dev
 
-      - name: Testing changes pushed by ${{ github.actor }} on branch ${{ github.ref }} ⌛
-        run: |
-          poetry run pytest
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -56,11 +52,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository

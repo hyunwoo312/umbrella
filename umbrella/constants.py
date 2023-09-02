@@ -1,89 +1,105 @@
 """
-Loads bot configuration from YAML files.
-By default, this simply loads the default configuration
-located at `config-default.yml` in the root directory.
+Loads bot configuration from environment variables and `.env` files.
+
+By default, the values defined in the classes are used,
+
+which could be overridden with an env var with the same naem.
 """
 import os
-from typing import Optional
 
-import yaml
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 MAIN_DIR = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.join(MAIN_DIR, os.pardir))
-YAML_FILE_PATH = os.path.join(PROJECT_ROOT, "config-default.yml")
 
-with open(YAML_FILE_PATH, encoding="UTF-8") as config_file:
-    CONFIG_YAML = yaml.safe_load(config_file)
+PING_USER_ID = lambda user_id: f"<@!{user_id}>"
 
 
-class YAMLInitializer(type):
-    subsection = None
+class BaseConfig(BaseSettings):
+    """
+    Default base configuration for the constant models.
+    """
 
-    def __getattr__(cls, name):
-        name = name.lower()
-
-        try:
-            if cls.subsection is not None:
-                return CONFIG_YAML[cls.section][cls.subsection][name]
-            return CONFIG_YAML[cls.section][name]
-        except KeyError as e:
-            dotted_path = ".".join(
-                (cls.section, cls.subsection, name)
-                if cls.subsection is not None
-                else (cls.section, name)
-            )
-            print(
-                f"Tried accessing configuration variable at `{dotted_path}`, but it could not be found."
-            )
-            raise AttributeError(repr(name)) from e
-
-    def __getitem__(cls, name):
-        return cls.__getattr__(name)
-
-    def __iter__(cls):
-        """Return generator of key: value pairs of current constants class' config values."""
-        for name in cls.__annotations__:
-            yield name, getattr(cls, name)
+    model_config = SettingsConfigDict(
+        env_file=(".env"),
+        env_file_encoding="utf-8",
+        env_nested_delimiter="__",
+        extra="ignore",
+    )
 
 
-"""
-Loads config values needed to initialize Bot
-"""
+class _BotConfig(BaseConfig):
+    """
+    Default config values needed to initialize Bot.
+    """
+
+    discord_app_id: str  # Loaded from '.env' file
+    discord_token: str  # Loaded from '.env' file
+    prefix: str = "!"
 
 
-class BotConfig(metaclass=YAMLInitializer):
-    section = "bot"
-
-    prefix: str
-    sentry_dsn: Optional[str]
-    token: Optional[str]
-    trace_loggers: Optional[str]
+BotConfig = _BotConfig()
 
 
-"""
-Loads config values of colors for use
-"""
+class _ColorConfig(BaseConfig):
+    """
+    Default config values of colors for use.
+    """
+
+    aqua: int = 0x00FFFF
+    azure: int = 0xF0FFFF
+    black: int = 0x000000
+    blue: int = 0x0000FF
+    green: int = 0x008000
+    mintcream: int = 0xF5FFFA
+    orange: int = 0xFFA500
+    palegreen: int = 0x98FB98
+    peachpuff: int = 0xFFDAB9
+    tomato: int = 0xFF6347
+    white: int = 0xFFFFFF
+    yellow: int = 0xFFFF00
 
 
-class ColorConfig(metaclass=YAMLInitializer):
-    section = "style"
-    subsection = "colors"
-
-    aqua: int
-    black: int
-    blue: int
-    green: int
-    tomato: int
-    white: int
-    yellow: int
+ColorConfig = _ColorConfig()
 
 
-"""
-Loads config values of urls for use
-"""
+class _LogConfig(BaseConfig):
+    """
+    Default config values for logging.
+    """
+
+    debug: bool = True
+    file_logs: bool = True
+    trace_level: int = 5
+
+    backup_count: int = 5
+    encoding: str = "utf-8"
+    max_bytes: int = 8 * 1024 * 1024 * 4  # 4 MB
+    string_format: str = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 
 
-class UrlConfig(metaclass=YAMLInitializer):
-    section = "url"
+LogConfig = _LogConfig()
 
-    source: str
+
+class _TimeConfig(BaseConfig):
+    """
+    Default config values for datetime related values.
+    """
+
+    datetime_format_full: str = "%Y-%m-%d %H:%M:%S"
+    datetime_format_ymd: str = "%Y-%m-%d"
+    datetime_format_hms: str = "%H:%M:%S"
+
+
+TimeConfig = _TimeConfig()
+
+
+class _UrlConfig(BaseConfig):
+    """
+    Default config values of urls for use.
+    """
+
+    source: str = "https://github.com/hyunwoo312/umbrella"
+
+
+UrlConfig = _UrlConfig()
